@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Team</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Profile</a>
+        <a href="/teams/search">Teams</a>
+    </nav>
+    <div class="container center mt-5">
+        <div class="team-form">
+            <h1 class="text-center">Create New Team</h1>
+            <form action="/teams/create" method="POST">
+                <div class="mb-3">
+                    <label for="team_id" class="form-label">Team ID</label>
+                    <input type="text" class="input-field" id="team_id" name="ID" required>
+                </div>
+                <div class="mb-3">
+                    <label for="team_name" class="form-label">Team Name</label>
+                    <input type="text" class="input-field" id="team_name" name="Name" required>
+                </div>
+                <fieldset class="fieldset">
+                    <legend>Members</legend>
+                    <div id="members-list">
+                        <div class="member mb-3">
+                            <label class="form-label">User ID</label>
+                            <input type="text" class="input-field" name="Members[0][ID]" required>
+                            <label class="form-label">Privilege</label>
+                            <select name="Members[0][Privilege]" class="select-field">
+                                <option value="Admin">Admin</option>
+                                <option value="Member">Member</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addMember()">+ Add Member</button>
+                </fieldset>
+                <div class="form-check mb-3">
+                    <input class="checkbox" type="checkbox" name="Visibility" id="visibility">
+                    <label class="form-check-label" for="visibility">Make Team Public</label>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="Description" class="textarea"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Create Team</button>
+            </form>
+        </div>
+    </div>
+    <script src="/static/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

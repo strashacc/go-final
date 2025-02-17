@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Teams</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Profile</a>
+        <a href="/teams/search">Teams</a>
+    </nav>
+    
+    <div class="container mt-5">
+        <h1>Search Teams</h1>
+        <form action="/teams/search" method="GET">
+            <div class="mb-3">
+                <label for="search" class="form-label">Search by Name or ID</label>
+                <input type="text" class="form-control" id="search" name="search" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+        <h2 class="mt-5">Results</h2>
+        <ul class="list-group">
+            {% for team in Teams %}
+                <li class="list-group-item">
+                    <a href="/teams/team/{{ team.ID }}">{{ team.Name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

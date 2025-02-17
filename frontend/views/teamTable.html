@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ Table.Name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <a href="/">Profile</a>
+        <a href="/teams/search">Teams</a>
+    </nav>
+    <form action="/tables/update/{{Table.ID}}" method="post">
+    <table>
+        <thead id="column-labels">
+            {% for column in Table.Columns %}
+            <th>{{column.Name}}</th>
+            {% endfor %}
+        </thead>
+        <tbody id="table">
+        {% for row_index in Table.Items %}
+            <tr>
+                {% for column in Table.Columns %}
+                    <td>
+                    {% if column.Type == "select" %}
+                        <select name="Columns[{{ column.Index }}][Items[]]" id="">
+                            {% for option in column.Options %}
+                                {% if column.Items[row_index] == option %}
+                                <option value="{{option}}" selected>{{option}}</option>
+                                {% else %}
+                                <option value="{{option}}">{{option}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    {% elif column.Type == "text" %}
+                        <input type="text" name="Columns[{{ column.Index }}][Items[]]" value="{{ column.Items[row_index] }}">
+                    {% elif column.Type == "member" %}
+                    <select name="Columns[{{ column.Index }}][Items[]]" id="">
+                        {% for option in Members %}
+                            {% if column.Items[row_index] == option.ID %}
+                            <option value="{{option.ID}}" selected>{{option.ID}}</option>
+                            {% else %}
+                            <option value="{{option.ID}}">{{option.ID}}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    {% else %}
+                        <input name="Columns[{{ column.Index }}][Items[]]" type="{{ column.Type }}" value="{{ column.Items[row_index] }}">
+                    {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <button type="button" onclick="addRow()">Add Row</button>
+    <button type="submit">Save Changes</button>
+    </form>
+    <form action="/tables/delete/{{Table.ID}}" method="post">
+        <button type="submit">Delete Table</button>
+    </form>
+    <table hidden>
+        <tr hidden id="row-template">
+            {% for column in Table.Columns %}
+                <td>
+                {% if column.Type == "select" %}
+                    <select name="Columns[{{ column.Index }}][Items[]]" id="">
+                        {% for option in column.Options %}
+                            <option value="{{option}}">{{option}}</option>
+                        {% endfor %}
+                    </select>
+                {% elif column.Type == "text" %}
+                    <input type="text" name="Columns[{{ column.Index }}][Items[]]">
+                {% elif column.Type == "member" %}
+                <select name="Columns[{{ column.Index }}][Items[]]" id="">
+                    {% for option in Members %}
+                        {% if column.Items[row_index] == option.ID %}
+                        <option value="{{option.ID}}" selected>{{option.ID}}</option>
+                        {% else %}
+                        <option value="{{option.ID}}">{{option.ID}}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                {% else %}
+                    <input name="Columns[{{ column.Index }}][Items[]]" type="{{ column.Type }}">
+                {% endif %}
+                </td>
+            {% endfor %}
+        </tr>
+    </table>
+    <form action="/teams/team/{{ Table.Owner }}" method="GET">
+        <button type="submit" class="btn btn-warning mt-3">Back to team page</button>
+    </form>
+    <script src="/static/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
